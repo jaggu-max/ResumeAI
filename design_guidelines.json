@@ -1,0 +1,126 @@
+{
+  "theme_archetype": {
+    "name": "Archetype 4 (Swiss & High-Contrast) + Editorial Twist",
+    "theme": "light",
+    "rationale": "For a premium career/resume platform, we need to instill trust and authority (Swiss layout) but with an editorial, old-money sophistication (serif headers, bone/terracotta colors) to distance it from cheap 'AI-slop'. The colors evoke calm confidence, warmth, and precision."
+  },
+  "color_palette": {
+    "light": {
+      "background": "#F7F7F5",
+      "surface": "#FFFFFF",
+      "border": "#E2E2DD",
+      "text_primary": "#1A1D1A",
+      "text_secondary": "#5C605A",
+      "primary": "#202F26",
+      "primary_hover": "#17221C",
+      "accent": "#D46B4E",
+      "accent_hover": "#C2583C",
+      "success": "#3D5A47",
+      "warning": "#DCA750"
+    },
+    "dark": {
+      "background": "#121413",
+      "surface": "#1A1D1A",
+      "border": "#2C312C",
+      "text_primary": "#F7F7F5",
+      "text_secondary": "#A3A7A1",
+      "primary": "#F7F7F5",
+      "primary_hover": "#E2E2DD",
+      "accent": "#D46B4E",
+      "accent_hover": "#E67D60",
+      "success": "#4F755D",
+      "warning": "#E8BA6F"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Cormorant Garamond",
+      "body": "Outfit",
+      "mono": "JetBrains Mono"
+    },
+    "google_fonts_url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl tracking-tight leading-none font-heading font-medium",
+      "h2": "text-3xl sm:text-4xl tracking-tight leading-tight font-heading font-medium",
+      "h3": "text-xl sm:text-2xl tracking-tight font-heading font-medium",
+      "h4": "text-lg sm:text-xl font-body font-medium",
+      "body": "text-base leading-relaxed font-body font-light",
+      "small": "text-sm tracking-wide font-body",
+      "overline": "text-xs tracking-[0.2em] uppercase font-body font-medium"
+    }
+  },
+  "spacing_and_layout": {
+    "philosophy": "Generous Spacing Philosophy. Elements should breathe.",
+    "container_padding": "p-8 md:p-12 lg:p-24",
+    "grid_modes": {
+      "marketing": "grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 with bento overlap (Mode A)",
+      "dashboard_editor": "grid-cols-1 md:grid-cols-4 gap-4 with full utilization (Mode B)"
+    },
+    "border_radius": "rounded-sm (2px) to rounded-md (6px) max. Avoid overly pill-shaped elements for a sharp, editorial feel."
+  },
+  "component_styles": {
+    "buttons": {
+      "primary": "bg-primary text-white rounded-sm px-6 py-3 font-medium transition-transform hover:-translate-y-0.5 shadow-sm hover:shadow-md",
+      "accent": "bg-accent text-white rounded-sm px-6 py-3 font-medium transition-transform hover:-translate-y-0.5 shadow-sm hover:shadow-md",
+      "ghost": "bg-transparent text-text_primary hover:bg-border/50 rounded-sm px-6 py-3 transition-colors"
+    },
+    "cards": {
+      "default": "bg-surface border border-border rounded-md p-6 lg:p-8 shadow-sm",
+      "marketing_bento": "bg-surface border border-border rounded-md p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-shadow"
+    },
+    "inputs": {
+      "default": "border-b border-border bg-transparent px-0 py-2 focus:border-primary focus:ring-0 transition-colors rounded-none placeholder:text-text_secondary/50",
+      "editor_panel": "border border-border bg-surface px-3 py-2 text-sm rounded-sm focus:border-primary focus:ring-1 focus:ring-primary/20"
+    },
+    "modals": {
+      "style": "Glassmorphism for overlays (backdrop-blur-xl bg-black/60), solid surfaces for modal bodies with 1px border"
+    }
+  },
+  "motion": {
+    "libraries": [
+      "framer-motion",
+      "lenis"
+    ],
+    "scroll": "Smooth scrolling mandatory (Lenis) for premium momentum feel in marketing pages.",
+    "page_transitions": "Fade in with subtle 10px Y-axis translation.",
+    "hover_states": "Crisp, fast color transitions (duration-200), subtle scale up for images/cards.",
+    "stagger": "List items and editor sections should use Framer Motion stagger (0.05s) on enter."
+  },
+  "accessibility": {
+    "contrast": "Ensure all text passes APCA/WCAG AA against background.",
+    "interactive": "All interactive elements MUST have data-testid attributes (e.g. data-testid='sign-in-button').",
+    "focus": "Clear focus rings on inputs and buttons using focus-visible:ring-2."
+  },
+  "media": {
+    "image_urls": {
+      "hero_background": {
+        "url": "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzV8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b3Jrc3BhY2V8ZW58MHx8fHwxNzc4MzkxMDcxfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Premium office space, use as low-opacity background for hero overlay"
+      },
+      "feature_templates": {
+        "url": "https://images.unsplash.com/photo-1688141585146-1fb4a1358c87?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGdlb21ldHJpYyUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzc4MzkxMDc1fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract warm geometric shapes to decorate the templates showcase section"
+      },
+      "feature_ats": {
+        "url": "https://images.unsplash.com/photo-1689005046852-f2b6520884eb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGdlb21ldHJpYyUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzc4MzkxMDc1fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Tech/wavy lines background for ATS Score feature block"
+      },
+      "editor_context": {
+        "url": "https://images.unsplash.com/photo-1632152053988-e94d3d77829b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTB8MHwxfHNlYXJjaHwyfHxyZXN1bWUlMjB0eXBpbmd8ZW58MHx8fHwxNzc4MzkxMDc1fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Typing on laptop, use for 'start building' CTA block"
+      }
+    }
+  },
+  "instructions_to_main_agent": [
+    "Strictly follow the color palette. Do NOT use default Tailwind colors like blue-500 or slate-900 unless mapping to the defined palette.",
+    "Implement Lenis for smooth scrolling in the marketing layout.",
+    "The Resume Editor should be 'cardless' or use 1px borders with square/sharp radii (max rounded-md). Avoid bubbly UI.",
+    "Use Playfair Display/Cormorant Garamond exclusively for large headings. Never use it for body text or UI components (buttons, inputs).",
+    "For the Indian UPI Payment flow, display a sharp, high-contrast QR code container with clear 'Upload UTR' input using the custom component styles.",
+    "Ensure 'data-testid' is present on all actionable items.",
+    "Include the developer credit exactly as requested in the footer: 'Created by Jagadeesh S Bentoor \u2013 Full Stack Developer | AI/ML Enthusiast' with Instagram link: https://www.instagram.com/god_of_world_j.",
+    "Do NOT use HTML for complex interactions. Use Shadcn components, but heavily customize them to remove the 'Vercel-look'.",
+    "Avoid purple/violet gradients entirely as per restrictions.",
+    "Editor Layout: Sidebar should be strictly functional (Archetype 4), minimizing visual noise to let the A4 Resume document preview stand out."
+  ]
+}
