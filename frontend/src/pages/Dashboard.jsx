@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import { toast } from "sonner";
 import { Plus, FileText, Trash2, Crown } from "lucide-react";
 
-const TEMPLATES = ["modern","minimal","corporate","software-engineer","data-scientist","fresher","internship","elegant","creative"];
+const TEMPLATES = ["modern","minimal","corporate","software-engineer","data-scientist","fresher","internship","elegant","creative","product-manager","ui-ux-designer","full-stack-developer","ai-ml-engineer"];
 
 const blankResume = (template = "modern") => ({
   template,
@@ -44,6 +44,12 @@ export default function Dashboard() {
   useEffect(() => { load(); }, []);
 
   const create = async (template = "modern") => {
+    const PREMIUM = ["software-engineer","data-scientist","elegant","creative","product-manager","ui-ux-designer","full-stack-developer","ai-ml-engineer"];
+    if (PREMIUM.includes(template) && user?.plan === "free") {
+      toast.message("Premium template", { description: "Upgrade to Pro or Premium to use this template." });
+      navigate("/pricing");
+      return;
+    }
     try {
       const blank = blankResume(template);
       const r = await api.post("/resumes", { title: "Untitled Resume", template, data: blank.data, customization: blank.customization });
@@ -72,18 +78,28 @@ export default function Dashboard() {
 
         <div className="mb-12">
           <h3 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">Start with a template</h3>
-          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-9 gap-2">
-            {TEMPLATES.map(t => (
-              <button key={t} onClick={() => create(t)} className="aspect-[3/4] bg-white border border-border rounded-md p-2 hover:border-accent hover:scale-105 transition" data-testid={`template-${t}`}>
-                <div className="h-1 w-8 bg-accent mb-2"></div>
-                <div className="text-[10px] font-medium text-ink capitalize">{t.replace("-"," ")}</div>
-                <div className="mt-2 space-y-1">
-                  <div className="h-1 bg-secondary rounded-sm"></div>
-                  <div className="h-1 bg-secondary rounded-sm w-3/4"></div>
-                  <div className="h-1 bg-secondary rounded-sm w-2/3"></div>
-                </div>
-              </button>
-            ))}
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 xl:grid-cols-13 gap-2">
+            {TEMPLATES.map(t => {
+              const PREMIUM = ["software-engineer","data-scientist","elegant","creative","product-manager","ui-ux-designer","full-stack-developer","ai-ml-engineer"];
+              const locked = PREMIUM.includes(t) && user?.plan === "free";
+              return (
+                <button key={t} onClick={() => create(t)} className="relative aspect-[3/4] bg-white border border-border rounded-md p-2 hover:border-accent hover:scale-105 transition group" data-testid={`template-${t}`}>
+                  <div className="h-1 w-8 bg-accent mb-2"></div>
+                  <div className="text-[10px] font-medium text-ink capitalize leading-tight">{t.replace(/-/g," ")}</div>
+                  <div className="mt-2 space-y-1">
+                    <div className="h-1 bg-secondary rounded-sm"></div>
+                    <div className="h-1 bg-secondary rounded-sm w-3/4"></div>
+                    <div className="h-1 bg-secondary rounded-sm w-2/3"></div>
+                  </div>
+                  {locked && (
+                    <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex flex-col items-center justify-center rounded-md" data-testid={`lock-${t}`}>
+                      <Crown size={16} className="text-accent"/>
+                      <span className="text-[9px] uppercase tracking-[0.15em] text-accent font-semibold mt-0.5">Premium</span>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 

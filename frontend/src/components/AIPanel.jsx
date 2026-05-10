@@ -36,8 +36,12 @@ export default function AIPanel({ resume, onApply, onApplySection }) {
       console.log("[AI] →", feature, provider);
       const r = await api.post("/ai", payload);
       const result = r.data?.result || "";
+      const isFallback = r.data?.mode === "fallback";
       setOut(result);
-      console.log("[AI] ✓", feature, "len=", result.length);
+      console.log("[AI] ✓", feature, "mode=", r.data?.mode);
+      if (isFallback) {
+        toast.message("Smart Resume Mode", { description: r.data?.notice || "AI enhancement temporarily unavailable — using Smart Resume Mode." });
+      }
 
       // Auto-apply for summary and skills
       const action = ACTIONS.find(a => a.key === feature);

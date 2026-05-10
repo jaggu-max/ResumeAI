@@ -17,6 +17,7 @@ from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, EmailStr, Field
 from emergentintegrations.llm.chat import LlmChat, UserMessage
+from fallbacks import fallback as smart_fallback
 
 # ---------- Setup ----------
 mongo_url = os.environ['MONGO_URL']
@@ -282,27 +283,46 @@ def get_ai_prompt(feature: str, ctx: Any, jd: Optional[str], text: Optional[str]
 async def ai_generate(body: AIRequest, user: dict = Depends(get_current_user)):
     sys, prompt = get_ai_prompt(body.feature, body.context, body.job_description, body.text, body.selected_text)
     logger.info(f"[AI] user={user.get('email')} feature={body.feature} provider={body.provider} promptLen={len(prompt)}")
+
+    # Provider chain: try requested first, then fall back through others
+    primary = body.provider or "openai"
+    chain = []
+    if primary == "openai":
+        chain = [("openai", "gpt-5.1"), ("anthropic", "claude-sonnet-4-5-20250929"), ("gemini", "gemini-2.5-flash")]
+    elif primary == "anthropic":
+        chain = [("anthropic", "claude-sonnet-4-5-20250929"), ("openai", "gpt-5.1"), ("gemini", "gemini-2.5-flash")]
+    elif primary == "gemini":
+        chain = [("gemini", "gemini-2.5-flash"), ("openai", "gpt-5.1"), ("anthropic", "claude-sonnet-4-5-20250929")]
+    else:
+        chain = [("openai", "gpt-5.1")]
+
     last_err = None
-    for attempt in range(2):  # simple retry
+    for provider, model in chain:
         try:
-            chat = LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"{user['id']}-{body.feature}", system_message=sys)
-            if body.provider == "anthropic":
-                chat = chat.with_model("anthropic", "claude-sonnet-4-5-20250929")
-            else:
-                chat = chat.with_model("openai", "gpt-5.1")
-            # for chatbot, prepend recent history into the prompt to keep context simple
+            chat = LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"{user['id']}-{body.feature}", system_message=sys).with_model(provider, model)
             if body.feature == "chat" and body.history:
                 hist = "\n".join([f"{m.get('role','user').upper()}: {m.get('content','')}" for m in body.history[-6:]])
                 prompt_full = f"Conversation so far:\n{hist}\n\nUSER: {prompt}\nASSISTANT:"
             else:
                 prompt_full = prompt
             resp = await chat.send_message(UserMessage(text=prompt_full))
-            return {"result": str(resp).strip(), "feature": body.feature, "provider": body.provider}
+            return {"result": str(resp).strip(), "feature": body.feature, "provider": provider, "mode": "ai"}
         except Exception as e:
             last_err = e
-            logger.warning(f"[AI] attempt {attempt+1} failed: {e}")
-    logger.exception("AI failed after retries")
-    raise HTTPException(500, f"AI error: {str(last_err)[:200] if last_err else 'unknown'}")
+            logger.warning(f"[AI] {provider} failed: {str(e)[:120]}")
+            continue
+
+    # Smart fallback - never break the user flow
+    logger.info(f"[AI] all providers failed; using smart fallback for {body.feature}")
+    ctx_str = body.context if isinstance(body.context, str) else (str(body.context) if body.context else "")
+    result = smart_fallback(body.feature, ctx_str, body.selected_text or body.text or "", body.job_description or "")
+    return {
+        "result": result,
+        "feature": body.feature,
+        "provider": "fallback",
+        "mode": "fallback",
+        "notice": "AI enhancement temporarily unavailable — using Smart Resume Mode.",
+    }
 
 # ---------- Payments ----------
 @api.get("/payments/info")

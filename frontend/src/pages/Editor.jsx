@@ -16,8 +16,8 @@ import jsPDF from "jspdf";
 import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
 import saveAs from "file-saver";
 
-const TEMPLATES = ["modern","minimal","corporate","software-engineer","data-scientist","fresher","internship","elegant","creative"];
-const PREMIUM_TEMPLATES = ["software-engineer","data-scientist","elegant","creative"];
+const TEMPLATES = ["modern","minimal","corporate","software-engineer","data-scientist","fresher","internship","elegant","creative","product-manager","ui-ux-designer","full-stack-developer","ai-ml-engineer"];
+const PREMIUM_TEMPLATES = ["software-engineer","data-scientist","elegant","creative","product-manager","ui-ux-designer","full-stack-developer","ai-ml-engineer"];
 const FONTS = ["Outfit","Cormorant Garamond","JetBrains Mono","Georgia","Helvetica"];
 const SECTION_LABELS = { personal: "Personal", summary: "Summary", experience: "Experience", education: "Education", skills: "Skills", projects: "Projects", certifications: "Certifications", languages: "Languages", achievements: "Achievements", interests: "Interests", references: "References" };
 

@@ -24,6 +24,11 @@ export default function Navbar({ minimal }) {
         <div className="flex items-center gap-3">
           {user ? (
             <>
+              {user.plan && user.plan !== "free" && (
+                <span className={`hidden sm:inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.15em] px-2 py-1 rounded-sm font-semibold ${user.plan === "premium" ? "bg-accent text-white" : "bg-primary text-primary-foreground"}`} data-testid="plan-badge">
+                  {user.plan === "premium" ? "Premium" : "Pro"}
+                </span>
+              )}
               <span className="hidden sm:inline text-sm text-muted-foreground" data-testid="user-name">{user.name}</span>
               <Button variant="outline" size="sm" onClick={async () => { await logout(); navigate("/"); }} data-testid="logout-btn" className="rounded-sm">Logout</Button>
             </>
